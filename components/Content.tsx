@@ -7,7 +7,7 @@ interface EKNavProps {
     cv2?: boolean,
 }
 
-export const EKNav: React.FunctionComponent<EKNavProps> = props => {
+const EKNav: React.FunctionComponent<EKNavProps> = props => {
     return <Navbar>
         <NavbarContent>
             <NavbarBrand>
@@ -24,3 +24,14 @@ export const EKNav: React.FunctionComponent<EKNavProps> = props => {
         </NavbarContent>
     </Navbar>
 }
+
+interface ContentProps extends EKNavProps, React.PropsWithChildren { };
+
+export const Content: React.FunctionComponent<ContentProps> = props => {
+    return <main className="min-h-screen">
+        {EKNav(props)}
+        <div className="flex flex-col items-center p-48">
+            {props.children}
+        </div>
+    </main>
+} 
