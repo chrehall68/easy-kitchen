@@ -22,11 +22,20 @@ class KitchenState {
         this._cv2 = false;  // cv2
     }
 }
-export const kitchenState = new KitchenState();
+const kitchenState = new KitchenState();
 
+interface State {
+    jw?: boolean,
+    cv2?: boolean
+}
 export async function getData() {
     return {
         jw: kitchenState.jw,
         cv2: kitchenState.cv2
-    };
+    } satisfies State;
+}
+export async function setData(props: State) {
+    const { jw, cv2 } = props;
+    kitchenState.jw = (jw === undefined ? kitchenState.jw : jw);
+    kitchenState.cv2 = (cv2 === undefined ? kitchenState.cv2 : cv2);
 }
