@@ -20,7 +20,7 @@ const EKNav: React.FunctionComponent<EKNavProps> = props => {
             <NavbarItem isActive={props.cv2}><Link href="cv2">CV2</Link></NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end">
-            <NavbarItem><Button color="secondary" >Reserve time</Button></NavbarItem>
+            <NavbarItem><Link href="reservations"><Button color="secondary">Reserve time</Button></Link></NavbarItem>
         </NavbarContent>
     </Navbar>
 }

@@ -23,15 +23,28 @@ class ReservationManager {
         this._reservations = this._reservations.slice(lastValid);
     }
 
-    public addReservation(r: Reservation) {
+    public addReservation(r: Reservation): boolean {
         this.filterReservations();
         var idx = 0;
+
+        // advance idx until this._reservations[idx].startTime >= r.startTime
         while (idx < this._reservations.length && this._reservations[idx].startTime < r.startTime) {
             // r is ahead in time, so keep going
             ++idx;
         }
-        // insert r in the sorted order
+
+        // make sure it doesn't overlap and that it's a valid reservation
+        if ((idx > 0 && this._reservations[idx - 1].endTime >= r.startTime)  // doesn't overlap w/ prev
+            || (idx < this._reservations.length && this._reservations[idx].startTime <= r.endTime)  // doesn't overlap w/ next
+            || (r.startTime >= r.endTime) // is valid
+        ) {
+            // it overlaps, so return false bc we cannot add this
+            return false;
+        }
+
+        // if it doesn't overlap, then just insert r in the sorted order
         this._reservations = [...this._reservations.slice(0, idx), r, ...this._reservations.slice(idx)];
+        return true;
     }
 
     constructor() {
@@ -43,8 +56,8 @@ class ReservationManager {
 const reservationManager = new ReservationManager();
 
 // exported async functions
-export async function addReservation(r: Reservation) {
-    reservationManager.addReservation(r);
+export async function addReservation(r: Reservation): Promise<boolean> {
+    return reservationManager.addReservation(r);
 }
 export async function getReservations() {
     return reservationManager.reservations;
